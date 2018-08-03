@@ -1,0 +1,31 @@
+{
+  "name": "perf-agent",
+  "version": "0.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "preversion": "npm test",
+    "test": "lab -vf"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ggoodman/perf-agent.git"
+  },
+  "keywords": [],
+  "author": "Geoffrey Goodman",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 8.9.0"
+  },
+  "engineStrict": true,
+  "bugs": {
+    "url": "https://github.com/ggoodman/perf-agent/issues"
+  },
+  "homepage": "https://github.com/ggoodman/perf-agent#readme",
+  "devDependencies": {
+    "@types/node": "^10.5.5",
+    "code": "^5.2.0",
+    "eslint": "^5.2.0",
+    "lab": "^15.5.0"
+  }
+}
