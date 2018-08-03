@@ -32,7 +32,7 @@ describe('stack traces', () => {
                 .to.be.a.number()
                 .and.be.greaterThan(100 * MS_PER_NS);
             expect(event.stacks).to.be.an.array();
-            expect(event.stacks.length).to.equal(2);
+            expect(event.stacks.length).to.be.at.least(2);
             expect(event.stacks[0]).to.be.an.array();
             expect(event.stacks[0].length).to.be.greaterThan(2);
             expect(event.stacks[1]).to.be.an.array();
