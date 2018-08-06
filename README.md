@@ -16,8 +16,8 @@ const agent = new PerfAgent({
 
 agent.onBlocked(e => {
     // e.duration will be the number of nanoseconds elapsed in a synchronous block
-    // e.stacks is an array of arrays of CallSite objects
-    // e.stacks[0][0] is the CallSite that *triggered* the block that exceeded the threshold
+    // e.stacks is an array of arrays of Frame objects
+    // e.stacks[0][0] is the Frame that *triggered* the block that exceeded the threshold
     console.log(e.toString()); // Log the event which will include a deep stack trace
 });
 agent.start(); // The agent must be explicitly started
@@ -82,10 +82,34 @@ Returns a `Disposable` whose `.dispose()` method can be invoked to unregister th
 
 **`.duration: number`**: The number of nanoseconds elapsed while executing the block.
 
-**`.stacks: NodeJS.CallSite[][]`**: An array of stack traces where each element in the top-level array represents a synchronous block's stack trace.
+**`.stacks: Frame[][]`**: An array of stack traces where each element in the top-level array represents a synchronous block's stack trace.
 
 Stacks and their elements are ordered such that the newest events are first.
 
 You can think of each element in the top-level array as being a logical consequence of the previous element.
 
 **`.toString()`**: Generate a string representation of the event.
+
+### `Frame`
+
+`Frame` represents a function invocation in a stack trace. It is a simplified version of a `NodeJS.CallSite` object whose objective is to reduce the memory pressure associated with collecting many such objects.
+
+**`.columnNumber: number`**
+
+**`.fileName: string`**
+
+**`.functionName: string`**
+
+**`.isConstructor: readonly boolean`**
+
+**`.isEval: readonly boolean`**
+
+**`.isNative: readonly boolean`**
+
+**`.isToplevel: readonly boolean`**
+
+**`.lineNumber: number`**
+
+**`.methodName: string`**
+
+**`.typeName: string`**
