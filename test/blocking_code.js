@@ -1,6 +1,7 @@
 //@ts-check
 'use strict';
 
+const Async = require('async');
 const Code = require('code');
 const Lab = require('lab');
 
@@ -103,5 +104,43 @@ describe('blocking code', () => {
         agent.stop();
 
         expect(blockedEventTriggered).to.equal(false);
+    });
+
+    it("will give useful insight into a slow synchronous block using require('async')", async () => {
+        const agent = new PerfAgent({
+            threshold: 100,
+            captureAsyncStackTraces: true,
+        });
+
+        let blockedEventTriggered = false;
+
+        agent.onBlocked(() => {
+            blockedEventTriggered = true;
+        });
+
+        agent.start();
+
+        await new Promise(resolve =>
+            Async.series(
+                [
+                    next => process.nextTick(next),
+                    next => setImmediate(next),
+                    next => setTimeout(next),
+                ],
+                () => {
+                    const end = Date.now() + 100;
+
+                    while (Date.now() <= end) {
+                        // Do nothing
+                    }
+
+                    return resolve();
+                }
+            )
+        );
+
+        agent.stop();
+
+        expect(blockedEventTriggered).to.equal(true);
     });
 });
